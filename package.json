@@ -13,7 +13,7 @@
     "start": "node build/src/index.js",
     "lint": "eslint ./src --fix --ext .js,ts"
   },
-  "keywords": [],
+  "keywords": ["Node", "CLI", "commits", "terminal"],
   "author": "",
   "license": "ISC",
   "dependencies": {
