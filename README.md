@@ -33,7 +33,7 @@ yarn
 **Then create the script that execute commit-manager.**
 
 ```json
-scripts: {
+"scripts": {
   "commit": "commit-manager"
 }
 ```
