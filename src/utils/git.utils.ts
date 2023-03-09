@@ -48,7 +48,8 @@ export const addToStagingArea = async (files: string[]) => {
 }
 
 export const createCommit = async (commit: string) => {
-  const commitFileDir = `${__dirname}\\commit.txt`
+  const commitFileDir =
+    process.platform === 'win32' ? `${__dirname}\\commit.txt` : `${__dirname}/commit.txt`
 
   try {
     await fs.writeFile(commitFileDir, commit)
