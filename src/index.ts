@@ -1,5 +1,7 @@
 import { intro, outro } from '@clack/prompts'
 import pc from 'picocolors'
+import yargs from 'yargs'
+import { hideBin } from 'yargs/helpers'
 
 import {
   addToStagingArea,
@@ -13,6 +15,11 @@ import {
 } from './utils/index.js'
 import { COMMIT_TYPES } from './constants/index.js'
 import { wrapText } from './utils/wrapText.utils.js'
+
+const argv = yargs(hideBin(process.argv)).option({
+  emoji: { type: 'boolean', default: true },
+  wrap: { type: 'number', default: 72 },
+}).argv as { wrap: number; emoji: boolean }
 
 const stagedFiles = await getStagedFiles()
 const changedFiles = await getChangedFiles()
@@ -40,7 +47,7 @@ const commitType = await getSelectPrompt({
   options: Object.entries(COMMIT_TYPES).map(([type, value]) => {
     return {
       label: `${value.emoji} ${type.padEnd(8, ' ')} - ${value.description}`,
-      value: `${value.emoji} ${type}`,
+      value: argv.emoji ? `${value.emoji} ${type}` : type,
     }
   }),
 })
@@ -68,7 +75,7 @@ if (addBodyMessage) {
     },
   })
 
-  parsedBodyMessage = wrapText(bodyMessage)
+  parsedBodyMessage = wrapText(bodyMessage, argv.wrap)
 }
 
 const commit = parsedBodyMessage
