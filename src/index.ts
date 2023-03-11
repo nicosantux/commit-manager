@@ -1,3 +1,5 @@
+import type { Argv } from './types.js'
+
 import { intro, outro } from '@clack/prompts'
 import pc from 'picocolors'
 import yargs from 'yargs'
@@ -13,13 +15,14 @@ import {
   getStagedFiles,
   getTextPrompt,
 } from './utils/index.js'
-import { COMMIT_TYPES } from './constants/index.js'
+import { COMMIT_TYPES, DEFAULT_TEXT_WRAP, DEFAULT_TITLE_LENGTH } from './constants/index.js'
 import { wrapText } from './utils/wrapText.utils.js'
 
-const argv = yargs(hideBin(process.argv)).option({
+const argv = yargs(hideBin(process.argv)).options({
   emoji: { type: 'boolean', default: true },
-  wrap: { type: 'number', default: 72 },
-}).argv as { wrap: number; emoji: boolean }
+  title: { type: 'number', default: DEFAULT_TITLE_LENGTH },
+  wrap: { type: 'number', default: DEFAULT_TEXT_WRAP },
+}).argv as Argv
 
 const stagedFiles = await getStagedFiles()
 const changedFiles = await getChangedFiles()
@@ -52,11 +55,12 @@ const commitType = await getSelectPrompt({
   }),
 })
 
+const titleLength = argv.title || DEFAULT_TITLE_LENGTH
 const commitTitle = await getTextPrompt({
-  message: 'Add commit title. Max 62 characters',
+  message: `Add commit title. Max ${titleLength} characters`,
   validate: (value) => {
     if (!value.length) return 'Title is required'
-    if (value.length > 62) return 'Title too long, consider add a body message'
+    if (value.length > titleLength) return 'Title too long, consider add a body message'
   },
 })
 
@@ -75,7 +79,9 @@ if (addBodyMessage) {
     },
   })
 
-  parsedBodyMessage = wrapText(bodyMessage, argv.wrap)
+  const textWrap = argv.wrap || DEFAULT_TEXT_WRAP
+
+  parsedBodyMessage = wrapText(bodyMessage, textWrap)
 }
 
 const commit = parsedBodyMessage
