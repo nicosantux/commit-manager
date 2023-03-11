@@ -24,7 +24,7 @@
   "dependencies": {
     "@clack/prompts": "0.6.1",
     "picocolors": "1.0.0",
-    "yargs": "^17.7.1"
+    "yargs": "17.7.1"
   },
   "devDependencies": {
     "@types/node": "18.14.4",
