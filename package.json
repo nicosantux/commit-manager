@@ -19,7 +19,7 @@
     "commits",
     "terminal"
   ],
-  "author": "",
+  "author": "Nicolás Santuccio",
   "license": "ISC",
   "dependencies": {
     "@clack/prompts": "0.6.1",
