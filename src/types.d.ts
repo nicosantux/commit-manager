@@ -19,3 +19,5 @@ type CommitShape = {
 export type CommitStruct = Record<CommitTypes, CommitShape>
 
 export type Options = { label: string; value: string; hint?: string }[]
+
+export type Argv = { emoji: boolean; title: number; wrap: number }
